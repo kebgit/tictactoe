@@ -1,59 +1,49 @@
-# game works like this
-# two humans take turns picking 
-# top right . status
-# have a class the places, one instance for each place so 9 instances (top left)
-# 
-#
-
-module Drawable
-  def drawtable
-    puts "#{topleft.status} | #{@placeholder} | #{@placeholder} "
-    puts "---------"
-    puts "#{@placeholder} | #{@placeholder} | #{@placeholder} "
-    puts "---------"
-    puts "#{@placeholder} | #{@placeholder} | #{@placeholder} "
-  end
-end
-
 class Square
-  include Drawable
-  attr_accessor :status
+  attr_accessor :state
 
   def initialize
-    @status = " "
+    @state = " "
   end
 
-  def marksquare(mark)
-    @status = mark
-  end
-
-end
-
-class Player
-  include Drawable
-  def initialize(mark)
-    @mark = mark
-    @placeholder = " "
+  def change(new)
+    @state = new
   end
 end
 
+class Game
+  attr_accessor :board
 
-xplayer = Player.new("x")
-oplayer = Player.new("o")
+  def initialize
+    @board = {
+      topleft: Square.new(),
+      topmid: Square.new(),
+      topright: Square.new(),
+      midleft: Square.new(),
+      midmid: Square.new(),
+      midright: Square.new(),
+      botleft: Square.new(),
+      botmid: Square.new(),
+      botright: Square.new(),
+    }
+  end
 
-topleft = Square.new()
-topmid = Square.new()
-topright = Square.new()
-midleft = Square.new()
-midmid = Square.new()
-midright = Square.new()
-botleft = Square.new()
-botmid = Square.new()
-botright = Square.new()
+  def drawboard
+    puts "#{board[:topleft].state} | #{board[:topmid].state} | #{board[:topright].state} "
+    puts "---------"
+    puts "#{board[:midleft].state} | #{board[:midmid].state} | #{board[:midright].state} "
+    puts "---------"
+    puts "#{board[:botleft].state} | #{board[:botmid].state} | #{board[:botright].state} "
+  end
 
-xplayer.drawtable
-topleft.marksquare("x")
-xplayer.drawtable
+  def change
+    pick = gets.chomp.to_sym
+    @board[pick].change("x")
+  end
+end
 
-
-# might have to create a hash of instances instead of just the instances loose, that way I can reference them with the hash index
+play = Game.new()
+9.times{
+  play.drawboard
+  play.change
+}
+play.drawboard
