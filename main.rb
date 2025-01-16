@@ -26,24 +26,42 @@ class Game
       botright: Square.new(),
     }
   end
-
+  
   def drawboard
+    puts "///"
     puts "#{board[:topleft].state} | #{board[:topmid].state} | #{board[:topright].state} "
     puts "---------"
     puts "#{board[:midleft].state} | #{board[:midmid].state} | #{board[:midright].state} "
     puts "---------"
     puts "#{board[:botleft].state} | #{board[:botmid].state} | #{board[:botright].state} "
-  end
-
-  def change
-    pick = gets.chomp.to_sym
-    @board[pick].change("x")
+    puts "///"
   end
 end
 
+class Player
+  attr_accessor :mark
+
+  def initialize(mark)
+    @mark = mark
+  end
+
+  def change(game)
+    pick = gets.chomp.to_sym
+    game.board[pick].change(@mark)
+  end
+
+end
+
 play = Game.new()
-9.times{
+ex = Player.new("x")
+oh = Player.new("o")
+
+4.times{
   play.drawboard
-  play.change
+  ex.change(play)
+  play.drawboard
+  oh.change(play)
 }
+play.drawboard
+ex.change(play)
 play.drawboard
